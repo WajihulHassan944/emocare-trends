@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anxiety and Depression Trends</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Anxiety and Depression Trends</h1>
+    <div id="trends"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function fetchData() {
+            const options = {
+                method: 'GET',
+                url: 'https://anxiety-depression1.p.rapidapi.com/records',
+                params: {
+                    orderBy: 'dataListIndex_asc',
+                    limit: '500'
+                },
+                headers: {
+                    'X-RapidAPI-Key': '3695cf0905msh990dbdd94caca2dp187eeajsn74d02578c54c',
+                    'X-RapidAPI-Host': 'anxiety-depression1.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await axios.request(options);
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+
+        async function displayTrends() {
+            const data = await fetchData();
+            const trends = data.trends;
+            const trendsDiv = document.getElementById('trends');
+            trendsDiv.innerHTML = '<h2>Trends</h2>';
+            trends.forEach(trend => {
+                trendsDiv.innerHTML += `<p>${trend}</p>`;
+            });
+        }
+
+        displayTrends();
+    </script>
+</body>
+</html>
